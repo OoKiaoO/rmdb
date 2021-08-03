@@ -12,6 +12,7 @@ const initialState = {
 
 
 export const useHomeFetch = () => {
+  const [ searchTerm, setSearchTerm ] = useState('');
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -42,7 +43,11 @@ export const useHomeFetch = () => {
     fetchMovies(1);
   }, []) // specify [] to have useEffect run only on initial render
 
-  return { state, loading, error }; // no need to specify state: state to return state itself if it has the same name
+  console.log(searchTerm);
+
+  return { state, loading, error, setSearchTerm };
+  // no need to specify state: state to return state itself if it has the same name
+  // you can can choose to return only the setter for a specific state
 }
 
 // export default useHomeFetch;
