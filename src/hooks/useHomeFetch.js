@@ -16,6 +16,8 @@ export const useHomeFetch = () => {
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  // creating an additional state to trigger the load more button functionality by using useEffect
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const fetchMovies = async (page, searchTerm = "") => {
     try {
@@ -47,9 +49,15 @@ export const useHomeFetch = () => {
   // specify [] to have useEffect run only on initial render
   // we include searchTerm in the dependencies array, meaning the useEffect will be triggered every time the searchTerm changes
 
-  console.log(searchTerm);
+  // Load More => to be triggered only when isLoadingMore changes 
+  useEffect(() => {
+    if (!isLoadingMore) return;
 
-  return { state, loading, error, searchTerm, setSearchTerm };
+    fetchMovies(state.page + 1, searchTerm);
+    setIsLoadingMore(false);
+  }, [isLoadingMore, searchTerm, state.page])
+
+  return { state, loading, error, searchTerm, setSearchTerm, setIsLoadingMore };
   // no need to specify state: state to return state itself if it has the same name
   // you can can choose to return only the setter for a specific state
 }
