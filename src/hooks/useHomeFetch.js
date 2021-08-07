@@ -38,14 +38,18 @@ export const useHomeFetch = () => {
     }
     setLoading(false);
   };
-
+  
+  // used both for initial render & search
   useEffect(() => {
-    fetchMovies(1);
-  }, []) // specify [] to have useEffect run only on initial render
+    setState(initialState); // to clean old results before adding new ones
+    fetchMovies(1, searchTerm);
+  }, [searchTerm]) 
+  // specify [] to have useEffect run only on initial render
+  // we include searchTerm in the dependencies array, meaning the useEffect will be triggered every time the searchTerm changes
 
   console.log(searchTerm);
 
-  return { state, loading, error, setSearchTerm };
+  return { state, loading, error, searchTerm, setSearchTerm };
   // no need to specify state: state to return state itself if it has the same name
   // you can can choose to return only the setter for a specific state
 }
